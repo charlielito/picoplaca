@@ -37,8 +37,8 @@ int horas;
 
 
 int buttonExit = 3;
-int buttonUp = 4;
-int buttonDown = 5;
+int buttonUp = 3;
+int buttonDown = 4;
 
 int diaSemana;
 
@@ -77,6 +77,11 @@ void draw_menu(void) {
     u8g2.drawStr(d, i*h, menu_strings[i].c_str());
 
   }
+}
+
+void draw_confighora(){
+  strDiaSemana+", "+strDia+" de "+strMes+" del "+strAnno;
+  
 }
 
 void setup(void) {
@@ -232,7 +237,24 @@ void loop(void) {
     if (pixCorrido[2] == true){
       filaPixX[2] -= 1;
     }
+    
+    if (digitalRead(buttonUp) == HIGH){
+      menu_current++;
+      Serial.println(menu_current);}
+    if (digitalRead(buttonDown) == HIGH)
+      menu_current--;
+    menu_current = adjust_menu(menu_current, 1, 3);
+   
   }
+}
+
+int adjust_menu(int menu, int low, int hi){
+  if (menu < low)
+    return hi;
+  else if (menu > hi)
+    return low;
+  else
+   return menu;
 }
 
 void main_draw(){
@@ -256,6 +278,10 @@ void draw() {
       break;
     case 1:
       draw_menu();
+      break;
+    case 2:
+      draw_confighora();
+      break;
   }
 
 
